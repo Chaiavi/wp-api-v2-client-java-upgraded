@@ -45,6 +45,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -127,6 +128,7 @@ public class Client implements Wordpress {
         messageConverters.add(new MappingJackson2HttpMessageConverter(emptyArrayAsNullObjectMapper));
         //messageConverters.add(new MappingJackson2HttpMessageConverter());
         restTemplate = new RestTemplate(messageConverters);
+        restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
 
         if (requestFactory != null) {
             restTemplate.setRequestFactory(requestFactory);
