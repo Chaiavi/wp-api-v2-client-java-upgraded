@@ -234,5 +234,10 @@
             <artifactId>httpcore5</artifactId>
             <version>5.3.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>3.2.7</version>
+        </dependency>
     </dependencies>
 </project>
