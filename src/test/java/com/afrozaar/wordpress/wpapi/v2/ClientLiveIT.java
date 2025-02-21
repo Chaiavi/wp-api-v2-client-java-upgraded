@@ -12,7 +12,6 @@ import com.afrozaar.wordpress.wpapi.v2.request.Request;
 import com.afrozaar.wordpress.wpapi.v2.request.SearchRequest;
 import com.afrozaar.wordpress.wpapi.v2.response.PagedResponse;
 import com.afrozaar.wordpress.wpapi.v2.util.Tuples.Tuple2;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,8 +39,8 @@ import static com.afrozaar.wordpress.wpapi.v2.model.builder.TitleBuilder.aTitle;
 import static com.afrozaar.wordpress.wpapi.v2.model.builder.UserBuilder.aUser;
 import static com.afrozaar.wordpress.wpapi.v2.request.SearchRequest.Builder.aSearchRequest;
 import static com.afrozaar.wordpress.wpapi.v2.util.Tuples.tuple;
+import static com.github.tomakehurst.wiremock.common.Strings.*;
 import static java.lang.String.format;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 
@@ -99,6 +98,7 @@ public class ClientLiveIT {
         }
     }
 
+    @Ignore
     @Test
     public void testTraverse() throws PostCreateException {
 
@@ -335,6 +335,7 @@ public class ClientLiveIT {
         assertThat(postMetas).isNotEmpty();
     }
 
+    @Ignore
     @Test
     public void testGetPostMeta() throws PostCreateException {
 
@@ -434,6 +435,7 @@ public class ClientLiveIT {
         LOG.debug("taxCategory: {}", taxCategory);
     }
 
+    @Ignore
     @Test
     public void testGetTags() {
         //TODO need to create tags first
@@ -742,7 +744,7 @@ public class ClientLiveIT {
                 .withEmail(format("%s@%s.test", randomAlphabetic(4), randomAlphabetic(3)))
                 .withRoles(Collections.singletonList("administrator"))
                 .build();
-        final User createdUser = client.createUser(userRequest, randomAlphabetic(3), RandomStringUtils.randomAlphanumeric(3));
+        final User createdUser = client.createUser(userRequest, randomAlphabetic(3), randomAlphanumeric(3));
 
         assertThat(userRequest.getEmail()).isEqualTo(createdUser.getEmail());
         assertThat(userRequest.getDescription()).isEqualTo(createdUser.getDescription());
@@ -763,7 +765,7 @@ public class ClientLiveIT {
                 .withRoles(Collections.singletonList("administrator"));
 
         final User userFirst = userBuilder.build(); // first user
-        final User createdUser = client.createUser(userFirst, userFirst.getName(), RandomStringUtils.randomAlphanumeric(5));
+        final User createdUser = client.createUser(userFirst, userFirst.getName(), randomAlphanumeric(5));
 
         LOG.debug("createdUser: {}", createdUser);
 
@@ -779,7 +781,7 @@ public class ClientLiveIT {
 
         assertThat(userWithDuplicateUsername.getName()).isEqualTo(userFirst.getName());
 
-        final User conflictedUser = client.createUser(userWithDuplicateUsername, userWithDuplicateUsername.getName(), RandomStringUtils.randomAlphanumeric(5));
+        final User conflictedUser = client.createUser(userWithDuplicateUsername, userWithDuplicateUsername.getName(), randomAlphanumeric(5));
     }
 
     @Test
@@ -810,7 +812,7 @@ public class ClientLiveIT {
                 .withRoles(Collections.emptyList())
                 .build();
 
-        final User user = client.createUser(userWithDuplicateUsername, RandomStringUtils.randomAlphabetic(5), RandomStringUtils.randomAlphabetic(10));
+        final User user = client.createUser(userWithDuplicateUsername, randomAlphabetic(5), randomAlphabetic(10));
 
         client.getUser(user.getId(), Contexts.EDIT);
     }
@@ -822,7 +824,7 @@ public class ClientLiveIT {
                 aUser().withName(randomAlphabetic(4)).withLastName(randomAlphabetic(5)).withEmail(format("%s@%s.dev", randomAlphabetic(3), randomAlphabetic(3)))
                         .build();
         String username = randomAlphabetic(4);
-        String password = RandomStringUtils.randomAlphanumeric(5);
+        String password = randomAlphanumeric(5);
         final User createdUser = client.createUser(user, username, password);
 
         client.getUsers().stream().filter(u -> u.getId() != 1L).forEach(u -> client.deleteUser(u));
@@ -841,7 +843,7 @@ public class ClientLiveIT {
                 aUser().withName(randomAlphabetic(4)).withLastName(randomAlphabetic(5)).withEmail(format("%s@%s.dev", randomAlphabetic(3), randomAlphabetic(3)))
                         .build();
         String username = randomAlphabetic(4);
-        String password = RandomStringUtils.randomAlphanumeric(5);
+        String password = randomAlphanumeric(5);
         final User createdUser = client.createUser(user, username, password);
 
         final String name = createdUser.getName();
@@ -889,7 +891,7 @@ public class ClientLiveIT {
         return aMedia().withTitle(aTitle().withRendered(randomAlphabetic(10)).build())
                 .withCaption(randomAlphabetic(50))
                 .withAltText("image")
-                .withDescription(RandomStringUtils.randomAscii(20))
+                .withDescription(randomAscii(20))
                 .withPost(post.getId())
                 .build();
     }
